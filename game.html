@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fuh It Up</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
+    <style>
+        /* Set a beach background image */
+        body {
+            background-image: url('beach pic.jpg'); /* Replace 'beach.jpg' with your beach image */
+            background-size: cover;
+            background-repeat: no-repeat;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            height: 100vh; /* Ensure full viewport height */
+        }
+
+        /* Style the header with a translucent background */
+        header {
+            background-color: rgba(255, 255, 255, 0.7); /* Translucent white */
+            padding: 20px;
+            width: 100%;
+            text-align: center;
+        }
+
+        #lineChart {
+            width: 150px;
+            height: 100px;
+        }
+
+        /* Style for the "Play Game Here" button */
+        #play-button {
+            background-color: #FF69B4; /* Hot Pink */
+            color: white;
+            border: none;
+            padding: 20px 40px;
+            font-size: 24px;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+
+        /* Style for the "Home" button */
+        #home-button {
+            background-color: #FF69B4; /* Hot Pink */
+            color: white;
+            border: none;
+            padding: 20px 40px;
+            font-size: 24px;
+            cursor: pointer;
+        }
+
+        /* Style for the "Game" content */
+        #game-content {
+            background-color: rgba(255, 255, 255, 0.7); /* Translucent white */
+            padding: 20px;
+            border-radius: 10px;
+        }
+
+        /* Style the footer with a translucent background */
+        footer {
+            background-color: rgba(255, 255, 255, 0.7); /* Translucent white */
+            color: black;
+            text-align: center;
+            padding: 10px;
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <!-- Centered page title -->
+        <h1>Fuh It Up</h1>
+    </header>
+
+    <!-- NEW -->
+    <p>Balance: <span id="balanceValue"></span></p>
+
+    <canvas id="lineChart" style="width: 300px; height: 200px;"></canvas>
+
+
+    
+
+    <main>
+        <!-- "Play Game Here" button -->
+        <button id="play-button" onclick="showGame()">Play Game Here</button>
+
+        <!-- "Game" content (initially hidden) -->
+        <div id="game-content" style="display: none;">
+            <h2>Game</h2>
+            <button id="home-button" onclick="goHome()">Home</button>
+        </div>
+    </main>
+
+    <footer>
+        <!-- Footer content goes here (e.g., copyright information) -->
+    </footer>
+
+    <script>
+        let balance = 100000;
+        var buyamt = 100;
+        var sellamt = 100;
+        var bitcoin = 2;
+        var ethereum = 2;
+        var litecoin = 2;    // crypto amounts
+        var bitcoinprice = 10;
+        var bit2 = 10;
+        var bit3 = 10;
+        var ethereumprice = 10;
+        var eth2 = 10;
+        var eth3 = 10;
+        var litecoinprice = 10;    // crypto prices
+        var lite2 = 10;
+        var lite3 = 10;
+        var coin = "bitcoin";
+        
+        var xValues = [1, 2, 3];
+        var yValues = [bitcoinprice, bit2, bit3];
+        const ctx = document.getElementById('lineChart').getContext('2d');
+        
+        // function update() {
+        //     randomize();
+        //     yValues = [bitcoinprice, bit2, bit3];
+        //     lineChart.update();
+        // }
+
+        function update() {
+            yValues.shift();
+            yValues.push(randomize());
+            yValues = [bitcoinprice, bit2, bit3];
+            //linechart.data.datasets[0].data = yValues;
+            lineChart.update();
+        }
+
+        function start() {  // randomize, set yValues, create chart
+            bitcoinprice = randomize();
+            bit2 = randomize();
+            bit3 = randomize();
+            ethereumprice = randomize();
+            eth2 = randomize();
+            eth3 = randomize();
+            litecoinprice = randomize();
+            lite2 = randomize();
+            lite3 = randomize();
+            yValues = [bitcoinprice, bit2, bit3];
+            const lineChart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: xValues,
+                datasets: [{
+                    label: 'Y Values',
+                    data: yValues,
+                    borderColor: 'rgba(75, 192, 192, 1)',
+                    borderWidth: 1,
+                    fill: false,
+                    pointRadius: 0
+                }]
+            },
+            options: {
+                scales: {
+                    x: {
+                        min: 0,
+                        type: 'linear',
+                        position: 'bottom'
+                    },
+                    y: {
+                        min: 0,
+                        max: Math.max(...yValues) + 1,
+                        type: 'linear',
+                        position: 'left'
+                    }
+                }
+            }
+        }); 
+            lineChart.canvas.style.width = '1000px';
+            lineChart.canvas.style.height = '700px';
+            //linechart.canvas.width = 400;
+            //linechart.canvas.height = 400;
+        }
+
+        // function randomize() { // randomize prices
+        //     bitcoinprice = bit2;
+        //     bit2 = bit3;
+        //     bit3 = Math.floor(100 + (Math.random() * 100));
+        //     ethereumprice = eth2;
+        //     eth2 = eth3;
+        //     eth3 = Math.floor(100 + (Math.random() * 100));
+        //     litecoinprice = lite2;
+        //     lite2 = lite3;
+        //     lite3 = Math.floor(100 + (Math.random() * 100));
+        // }
+        function randomize() { // randomize prices
+            num = Math.floor(100 + (Math.random() * 100));
+            return num;
+        }
+
+        function buy(coin, buyamt) {
+            if (buyamt <= balance) {
+                if (coin == "bitcoin") {
+                    bitcoin += buyamt / bitcoinprice;
+                    balance -= buyamt;
+                }
+                if (coin == "ethereum") {
+                    ethereum += buyamt / ethereumprice;
+                    balance -= buyamt;
+                }
+                if (coin == "litecoin") {
+                    litecoin += buyamt / litecoinprice;
+                    balance -= buyamt;
+                }
+            }
+            // else: not enough money ???    
+
+            document.getElementById("balanceValue").textContent = balance;
+        }
+        function sell(coin, sellamt) {
+            if (coin == "bitcoin" && sellamt/bitcoinprice <= bitcoin) {
+                bitcoin -= sellamt / bitcoinprice;
+                balance += sellamt;
+            }
+            if (coin == "ethereum" && sellamt/bitcoinprice <= ethereum) {
+                ethereum -= sellamt / ethereumprice;
+                balance += sellamt;
+            }
+            if (coin == "litecoin" && sellamt/bitcoinprice <= litecoin) {
+                litecoin -= sellamt / litecoinprice;
+                balance += sellamt;
+            }
+            // else: not enough crypto ???
+
+            document.getElementById("balanceValue").textContent = balance;
+        }
+
+
+        // Function to show the "Game" content when the button is clicked
+        function showGame() {
+            const playButton = document.getElementById('play-button');
+            const gameContent = document.getElementById('game-content');
+            playButton.style.display = 'none'; // Hide the "Play Game Here" button
+            gameContent.style.display = 'block'; // Show the "Game" content
+            
+            buy("bitcoin", 10);
+            start();
+        }
+
+        // Function to go back to the original page
+        function goHome() {
+            const playButton = document.getElementById('play-button');
+            const gameContent = document.getElementById('game-content');
+            playButton.style.display = 'block'; // Show the "Play Game Here" button
+            gameContent.style.display = 'none'; // Hide the "Game" content
+            
+            sell("bitcoin", 10);
+            update();
+            console.log("bitcoin: " + bitcoin + " ethereum: " + ethereum + " litecoin: " + litecoin);
+        }
+
+        
+        //setInterval(update, 500);
+    </script>
+</body>
+</html>
+

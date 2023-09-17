@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bitcoin Game Simulator</title>
+    <link rel="stylesheet" href="style2.css">
+</head>
+<body>
+    <div class="container">
+        <div class="top-buttons">
+            <button class="button">Bitcoin</button>
+            <button class="button">Ethereum</button>
+            <button class="button">Litecoin</button>
+        </div>
+        <div class="game-container">
+            <div class="about-coin">
+                <h2>About Coin</h2>
+                <p>Insert text here</p>
+            </div>
+            <div class="game-box" style="border: 2px solid #007BFF; padding: 40px 20px; text-align: center;">
+                <h2>Game</h2>
+                <!-- Placeholder for the game -->
+            </div>
+            <div class="daily-tip">
+                <h2>Daily Tip</h2>
+                <p>Insert text here</p>
+            </div>
+        </div>
+        <div>
+            <button class="button">Buy</button>
+            <button class="button">Sell</button>
+        </div>
+    </div>
+
+    <script>
+        let balance = 100000;
+        var buyamt = 100;
+        var sellamt = 100;
+        var bitcoin = 10;
+        var ethereum = 10;
+        var litecoin = 10;
+        var bitcoinprice = 10;
+        var ethereumprice = 10;
+        var litecoinprice = 10;
+        var coin = "bitcoin";
+
+        document.getElementById('buyButton').addEventListener('click', function() {
+            coin = "bitcoin";
+            buy(coin, buyamt);
+        });
+
+        document.getElementById('sellButton').addEventListener('click', function() {
+            coin = "bitcoin";
+            sell(coin, sellamt);
+        });
+
+        function buy(coin, buyamt) {
+            if (buyamt <= balance) {
+                if (coin == "bitcoin") {
+                    bitcoin += buyamt / bitcoinprice;
+                    balance -= buyamt;
+                }
+                if (coin == "ethereum") {
+                    ethereum += buyamt / ethereumprice;
+                    balance -= buyamt;
+                }
+                if (coin == "litecoin") {
+                    litecoin += buyamt / litecoinprice;
+                    balance -= buyamt;
+                }
+            }
+            else {
+                alert("Not enough money! Please enter an amount no larger than your balance.");
+            }
+            //document.getElementById("balanceValue").textContent = balance;
+        }
+
+        function sell(coin, sellamt) {
+            if (coin == "bitcoin" && sellamt/bitcoinprice <= bitcoin) {
+                bitcoin -= sellamt / bitcoinprice;
+                balance += sellamt;
+            }
+            if (coin == "ethereum" && sellamt/bitcoinprice <= ethereum) {
+                ethereum -= sellamt / ethereumprice;
+                balance += sellamt;
+            }
+            if (coin == "litecoin" && sellamt/bitcoinprice <= litecoin) {
+                litecoin -= sellamt / litecoinprice;
+                balance += sellamt;
+            }
+            else {
+                alert("Not enough crypto! Please enter a smaller amount.");
+            }
+            //document.getElementById("balanceValue").textContent = balance;
+        }
+    </script>
+</body>
+</html>
